@@ -1,0 +1,18 @@
+/* * selects all elements on page */
+* { 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#canvas1 {
+    border: 5px solid black;
+    /* postion abosolute centers vertically and horizontally */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #4d79bc;
+    /* max-width scales down entire canvas so it is always visble no matter screen size */
+    max-width: 100%;
+}
