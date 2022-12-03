@@ -80,7 +80,7 @@ window.addEventListener('load', function() {
         }
         shootTop(){
             if(this.game.ammo > 0){
-                this.projectiles.push(new Projectile(this.game,this.x, this.y));
+                this.projectiles.push(new Projectile(this.game,this.x + 80, this.y + 30));
                 this.game.ammo--;
             }
 
