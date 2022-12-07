@@ -180,6 +180,12 @@ window.addEventListener('load', function () {
             this.enemies.push(new Angler1(this));
             console.log(this.enemies);
         }
+        checkCollision(rect1, rect2) { // first 2 checks if true = enemy&player same x value, last 2 if true = same y value 
+            return (rect1.x < rect2.width && // checks if player's left side is infront of enemy's right side border(back)
+                rect1.x + rect1.width > rect2.x && // checks if player's right side border is passed enemy's left side border
+                rect1.y < rect2.y + rect2.height && // checks if player's top border is above enemy's btm border
+                rect1.height + rect1.y > rect2.y) // checks if play'er's btm border is below enemy's top border
+        }
     }
 
     const game = new Game(canvas.width, canvas.height);
@@ -191,7 +197,7 @@ window.addEventListener('load', function () {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         game.update(deltaTime);
         game.draw(ctx);
-        requestAnimationFrame(animate);
+        //requestAnimationFrame(animate);
     }
     animate(0);
 });
