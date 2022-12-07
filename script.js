@@ -160,6 +160,9 @@ window.addEventListener('load', function () {
             }
             this.enemies.forEach(enemy => {
                 enemy.update();
+                if (this.checkCollision(this.player, enemy)) { //if true, collision detected
+                    enemy.markedForDeletion = true;
+                }
             });
             this.enemies = this.enemies.filter(enemy => !enemy.markedForDeletion);
             if (this.enemyTimer > this.enemyInterval && !this.gameOver) {
@@ -197,7 +200,7 @@ window.addEventListener('load', function () {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         game.update(deltaTime);
         game.draw(ctx);
-        //requestAnimationFrame(animate);
+        requestAnimationFrame(animate);
     }
     animate(0);
 });
