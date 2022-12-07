@@ -92,6 +92,8 @@ window.addEventListener('load', function () {
             this.x = this.game.width;
             this.speedX = Math.random() * -1.5 - .05; // enemey will move from right to left
             this.markedForDeletion = false;
+            this.lives = 5;
+            this.score = this.lives;
         }
         update() {
             this.x += this.speedX;
@@ -100,6 +102,9 @@ window.addEventListener('load', function () {
         draw(context) {
             context.fillStyle = 'red';
             context.fillRect(this.x, this.y, this.width, this.height);
+            context.fillStyle = 'black';
+            context.font = '20px Helvetica';
+            context.fillText(this.lives, this.x, this.y);
         }
     }
     class Angler1 extends Enemy {
@@ -160,9 +165,19 @@ window.addEventListener('load', function () {
             }
             this.enemies.forEach(enemy => {
                 enemy.update();
-                if (this.checkCollision(this.player, enemy)) { //if true, collision detected
+                if (this.checkCollision(this.player, enemy)) { //if true, collision detected, rect deleted
                     enemy.markedForDeletion = true;
                 }
+                this.player.projectiles.forEach(projectile => {
+                    if (this.checkCollision(projectile, enemy)) {
+                        enemy.lives--; //if true, one enemy deleted for every collision
+                        projectile.markedForDeletion = true;
+                        if (enemy.lives <= 0) {
+                            enemy.markedForDeletion = true;
+                            this.score += enemy.score;
+                        }
+                    }
+                })
             });
             this.enemies = this.enemies.filter(enemy => !enemy.markedForDeletion);
             if (this.enemyTimer > this.enemyInterval && !this.gameOver) {
@@ -184,7 +199,7 @@ window.addEventListener('load', function () {
             console.log(this.enemies);
         }
         checkCollision(rect1, rect2) { // first 2 checks if true = enemy&player same x value, last 2 if true = same y value 
-            return (rect1.x < rect2.width && // checks if player's left side is infront of enemy's right side border(back)
+            return (rect1.x < rect2.x + rect2.width && // checks if player's left side is infront of enemy's right side border(back)
                 rect1.x + rect1.width > rect2.x && // checks if player's right side border is passed enemy's left side border
                 rect1.y < rect2.y + rect2.height && // checks if player's top border is above enemy's btm border
                 rect1.height + rect1.y > rect2.y) // checks if play'er's btm border is below enemy's top border
